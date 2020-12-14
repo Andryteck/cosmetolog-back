@@ -1,0 +1,26 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+
+// interface IPatient {
+//   id: string,
+//   fullName: string,
+//   phone: string,
+// }
+
+const PatientSchema = new Schema(
+    {
+        fullName: String,
+        phone: String,
+    }
+);
+PatientSchema.virtual('appointments', {
+    ref: 'Appointment',
+    localField: '_id',
+    foreignField: 'user',
+    justOne: false
+})
+
+const Patients = mongoose.model('Patient', PatientSchema);
+
+
+module.exports = Patients;
