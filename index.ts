@@ -40,7 +40,7 @@ mongoose.connect(uri, {
         mongoose.connection.on('error', err => console.log(`Connection error: ${err}`))
         mongoose.connection.once('open', () => console.log(`Connection to BD`))
 
-        app.listen(6666, err => {
+        app.listen(process.env.PORT, err => {
             err ? console.log(err) : console.log('Server started!');
         });
     })
