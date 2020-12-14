@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const express = require('express');
 const app = express();
-import cors = require('cors');
+const cors = require('cors');
 // import * as dotenv from "dotenv";
 
 const {PatientCtrl} = require('./controllers');
