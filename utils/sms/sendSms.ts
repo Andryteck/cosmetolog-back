@@ -1,11 +1,11 @@
 import axios, {AxiosResponse} from 'axios'
 const querystring = require('querystring')
 
-// interface IParams {
-//     phone: number
-//     text: string
-//     time: string
-// }
+interface IParams {
+    number: number
+    text: string
+    time: string
+}
 
 interface ICreateSmsMessageResponse {
     status: string,
@@ -32,7 +32,7 @@ const instance = axios.create({
 )
 
 
-async function sendSms({number, text, time}) {
+async function sendSms({number, text, time}:IParams) {
     let params: any = {
         token: '0ffd27c599ea1a79784216c47e26ab5a',
         phone: number,

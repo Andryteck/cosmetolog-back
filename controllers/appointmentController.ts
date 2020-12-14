@@ -12,7 +12,7 @@ function AppointmentController() {
 }
 
 
-const create = async function (req, res) {
+const create = async function (req:any, res:any) {
     let patient;
     const data = {
         user: req.body.user,
@@ -41,7 +41,7 @@ const create = async function (req, res) {
             });
     }
 
-    Appointment.create(data, function (err, doc) {
+    Appointment.create(data, function (err:any, doc:any) {
         if (err) {
             return res.status(500)
                 .json({
@@ -77,7 +77,7 @@ const create = async function (req, res) {
 
 };
 
-const remove = async function (req, res) {
+const remove = async function (req:any, res:any) {
     const id = req.params.id;
     try {
         await Appointment.findOne({_id: id});
@@ -89,7 +89,7 @@ const remove = async function (req, res) {
             });
     }
 
-    Appointment.deleteOne({_id: id}, err => {
+    Appointment.deleteOne({_id: id}, (err:any) => {
         if (err) {
             return res.status(500)
                 .json({
@@ -103,7 +103,7 @@ const remove = async function (req, res) {
     })
 };
 
-const update = async function (req, res) {
+const update = async function (req:any, res:any) {
     const appointmentId = req.params.id;
     const data = {
         bodyNumber: req.body.bodyNumber,
@@ -122,7 +122,7 @@ const update = async function (req, res) {
 
     Appointment.updateOne({_id: appointmentId},
         {$set: data},
-        function (err, doc) {
+        function (err:any, doc:any) {
             if (err) {
                 return res.status(500)
                     .json({
@@ -147,10 +147,10 @@ const update = async function (req, res) {
 
 };
 
-const all = function (req, res) {
+const all = function (req:any, res:any) {
     Appointment.find({})
         .populate('user')
-        .exec(function (err, docs) {
+        .exec(function (err:any, docs:any) {
             if (err) {
                 return req.status(500)
                     .json({
@@ -158,12 +158,12 @@ const all = function (req, res) {
                         message: err,
                     });
             }
-        
+
             res.json({
                 status: 'success',
                 items: reduce(
-                    groupBy(docs, 'date'), 
-                    (result, value, key) => {
+                    groupBy(docs, 'date'),
+                    (result:any, value:any, key:any) => {
                         result = [...result, {title: dayjs(key)
                             .locale(ruLocale)
                             .format('D MMMM'), data: value}]
@@ -173,7 +173,7 @@ const all = function (req, res) {
     });
 };
 
-  
+
 
 AppointmentController.prototype = {
     create,

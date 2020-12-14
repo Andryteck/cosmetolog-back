@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const express = require('express');
 const app = express();
@@ -40,7 +40,7 @@ mongoose.connect(uri, {
         mongoose.connection.on('error', err => console.log(`Connection error: ${err}`))
         mongoose.connection.once('open', () => console.log(`Connection to BD`))
 
-        app.listen(process.env.PORT, err => {
+        app.listen(process.env.PORT, (err:any) => {
             err ? console.log(err) : console.log('Server started!');
         });
     })

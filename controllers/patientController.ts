@@ -6,7 +6,7 @@ function PatientController() {
 }
 
 
-const create = function (req, res) {
+const create = function (req:any, res:any) {
     const data = {
         fullName: req.body.fullName,
         phone: req.body.phone,
@@ -19,7 +19,7 @@ const create = function (req, res) {
             message: errors.array(),
         });
     }
-    Patient.create(data, function (err, doc) {
+    Patient.create(data, function (err:any, doc:any) {
         if (err) {
             return res.status(500)
                 .json({
@@ -37,7 +37,7 @@ const create = function (req, res) {
 
 };
 
-const remove = async function (req, res) {
+const remove = async function (req:any, res:any) {
     const id = req.params.id;
     try {
         await Patient.findOne({_id: id});
@@ -49,7 +49,7 @@ const remove = async function (req, res) {
             });
     }
 
-    Patient.deleteOne({_id: id}, err => {
+    Patient.deleteOne({_id: id}, (err:any) => {
         if (err) {
             return res.status(500)
                 .json({
@@ -63,7 +63,7 @@ const remove = async function (req, res) {
     })
 };
 
-const update = async function (req, res) {
+const update = async function (req:any, res:any) {
     const patientId = req.params.id;
     const data = {
         fullName: req.body.fullName,
@@ -80,7 +80,7 @@ const update = async function (req, res) {
 
     Patient.updateOne({_id: patientId},
         {$set: data},
-        function (err, doc) {
+        function (err:any, doc:any) {
             if (err) {
                 return res.status(500)
                     .json({
@@ -104,8 +104,8 @@ const update = async function (req, res) {
 
 };
 
-const all = function (req, res) {
-    Patient.find({}, function (err, docs) {
+const all = function (req:any, res:any) {
+    Patient.find({}, function (err:any, docs:any) {
         if (err) {
             return req.status(500)
                 .json({
@@ -121,11 +121,11 @@ const all = function (req, res) {
     });
 };
 
-const show = async function (req, res) {
+const show = async function (req:any, res:any) {
     const id = req.params.id;
     try {
         const patient = await Patient.findById(id).populate('appointments').exec()
-        
+
         if (patient) {
             res.json({
                     status: 'success',
