@@ -36,7 +36,7 @@ mongoose_1.default.connect(uri, {
     app.patch('/appointments/:id', appointmentValidation.update, AppointmentCtrl.update);
     mongoose_1.default.connection.on('error', err => console.log(`Connection error: ${err}`));
     mongoose_1.default.connection.once('open', () => console.log(`Connection to BD`));
-    app.listen(process.env.PORT, (err) => {
+    app.listen(process.env.PORT || 6666, (err) => {
         err ? console.log(err) : console.log('Server started!');
     });
 })

@@ -166,7 +166,16 @@ const all = function (req:any, res:any) {
                     (result:any, value:any, key:any) => {
                         result = [...result, {title: dayjs(key)
                             .locale(ruLocale)
-                            .format('D MMMM'), data: value}]
+                            .format('D MMMM'), data: value.sort((a: any, b: any)=> {
+                                const date1 = b.date+'T'+b.time
+                                const date2 = a.date+'T'+a.time
+                        
+                                // console.log(date1, date2)
+                                return new Date(date2).getTime() - new Date(date1).getTime() 
+                            })
+                            
+                            }
+                            ]
                     return result
                 }, []),
         });
