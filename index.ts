@@ -35,7 +35,7 @@ mongoose.connect(uri, {
         app.get('/appointments', AppointmentCtrl.all);
         app.post('/appointments', appointmentValidation.create, AppointmentCtrl.create);
         app.delete('/appointments/:id', AppointmentCtrl.remove);
-        app.patch('/appointments/:id', appointmentValidation.update, AppointmentCtrl.update);
+        app.put('/appointments/:id', appointmentValidation.update, AppointmentCtrl.update);
 
         mongoose.connection.on('error', err => console.log(`Connection error: ${err}`))
         mongoose.connection.once('open', () => console.log(`Connection to BD`))
