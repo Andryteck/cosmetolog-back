@@ -110,8 +110,7 @@ const update = async function (req:any, res:any) {
         preporation: req.body.preporation,
         price: req.body.price,
         date: req.body.date,
-        time: req.body.time,
-        user: req.body.user
+        time: req.body.time
     };
     const errors = validationResult(req)
 
