@@ -106,7 +106,8 @@ const remove = async function (req:any, res:any) {
 const update = async function (req:any, res:any) {
     const appointmentId = req.params.id;
     const data = {
-        bodyNumber: req.body.bodyNumber,
+        procedure: req.body.procedure,
+        preporation: req.body.preporation,
         price: req.body.price,
         date: req.body.date,
         time: req.body.time,
