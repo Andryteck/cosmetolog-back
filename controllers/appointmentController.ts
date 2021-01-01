@@ -111,6 +111,7 @@ const update = async function (req:any, res:any) {
         price: req.body.price,
         date: req.body.date,
         time: req.body.time,
+        user: req.body.user
     };
     const errors = validationResult(req)
 
