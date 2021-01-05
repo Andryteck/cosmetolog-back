@@ -5,10 +5,12 @@ const Schema = mongoose.Schema;
 //   id: string,
 //   fullName: string,
 //   phone: string,
+//   instagramUrl: string
 // }
 const PatientSchema = new Schema({
     fullName: String,
     phone: String,
+    instagramUrl: String
 });
 PatientSchema.virtual('appointments', {
     ref: 'Appointment',
