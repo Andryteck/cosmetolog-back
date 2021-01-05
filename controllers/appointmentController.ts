@@ -120,31 +120,29 @@ const update = async function (req:any, res:any) {
             message: errors.array(),
         });
     }
-
-    Appointment.updateOne({_id: appointmentId},
-        {$set: data},
-        function (err:any, doc:any) {
-            if (err) {
-                return res.status(500)
+    try {
+        const updateAppointment = await Appointment.findByIdAndUpdate(appointmentId,
+            data, {new: true})
+            if(updateAppointment){
+                res.status(200)
+                .json({
+                    success: true,
+                    data: updateAppointment,
+                });
+            } else {
+                res.status(404)
+                .json({
+                    success: false,
+                    message: 'Appointment_not_found',
+                }); 
+            }
+    } catch(err){
+        res.status(500)
                     .json({
                         success: false,
                         message: err,
                     });
-            }
-            if (!doc) {
-                return res.status(404)
-                    .json({
-                        success: false,
-                        message: 'Appointment_not_found',
-                    });
-            }
-
-            res.status(200)
-                .json({
-                    success: true,
-                    data: doc,
-                });
-        });
+                }
 
 };
 

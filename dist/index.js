@@ -15,6 +15,7 @@ const uri = `mongodb+srv://Andrei:772316Andrew@cluster0.rua4d.gcp.mongodb.net/sv
 // dotenv.config();
 // @TODO сделать удаление пациента в приеме
 // @TODO сделать название препарата для каждого пациента и возможность его редактировать
+// @TODO поменять patch на put в changeAppointment
 mongoose_1.default.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

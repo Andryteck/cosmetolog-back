@@ -109,10 +109,11 @@ const update = function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const appointmentId = req.params.id;
         const data = {
-            bodyNumber: req.body.bodyNumber,
+            procedure: req.body.procedure,
+            preporation: req.body.preporation,
             price: req.body.price,
             date: req.body.date,
-            time: req.body.time,
+            time: req.body.time
         };
         const errors = express_validator_1.validationResult(req);
         if (!errors.isEmpty()) {
@@ -121,27 +122,30 @@ const update = function (req, res) {
                 message: errors.array(),
             });
         }
-        Appointment.updateOne({ _id: appointmentId }, { $set: data }, function (err, doc) {
-            if (err) {
-                return res.status(500)
+        try {
+            const updateAppointment = yield Appointment.findByIdAndUpdate(appointmentId, data, { new: true });
+            if (updateAppointment) {
+                res.status(200)
                     .json({
-                    success: false,
-                    message: err,
+                    success: true,
+                    data: updateAppointment,
                 });
             }
-            if (!doc) {
-                return res.status(404)
+            else {
+                res.status(404)
                     .json({
                     success: false,
                     message: 'Appointment_not_found',
                 });
             }
-            res.status(200)
+        }
+        catch (err) {
+            res.status(500)
                 .json({
-                success: true,
-                data: doc,
+                success: false,
+                message: err,
             });
-        });
+        }
     });
 };
 const all = function (req, res) {
