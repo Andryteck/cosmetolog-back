@@ -5,14 +5,16 @@ const Schema = mongoose.Schema;
 //   id: string,
 //   fullName: string,
 //   phone: string,
-//   instagramUrl: string
+//   instagramUrl: string,
+//   status: string
 // }
 
 const PatientSchema = new Schema(
     {
         fullName: String,
         phone: String,
-        instagramUrl: String
+        instagramUrl: String,
+        status: String
     }
 );
 PatientSchema.virtual('appointments', {

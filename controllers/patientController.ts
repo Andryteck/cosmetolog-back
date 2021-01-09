@@ -10,7 +10,8 @@ const create = function (req:any, res:any) {
     const data = {
         fullName: req.body.fullName,
         phone: req.body.phone,
-        instagramUrl: req.body.instagramUrl
+        instagramUrl: req.body.instagramUrl,
+        status: 'надежный клиент'
     };
     const errors = validationResult(req)
 
@@ -69,7 +70,8 @@ const update = async function (req:any, res:any) {
     const data = {
         fullName: req.body.fullName,
         phone: req.body.phone,
-        instagramUrl: req.body.instagramUrl
+        instagramUrl: req.body.instagramUrl,
+        status: req.body.status
     };
     const errors = validationResult(req)
 

@@ -17,7 +17,8 @@ const create = function (req, res) {
     const data = {
         fullName: req.body.fullName,
         phone: req.body.phone,
-        instagramUrl: req.body.instagramUrl
+        instagramUrl: req.body.instagramUrl,
+        status: 'надежный клиент'
     };
     const errors = express_validator_1.validationResult(req);
     if (!errors.isEmpty()) {
@@ -74,7 +75,8 @@ const update = function (req, res) {
         const data = {
             fullName: req.body.fullName,
             phone: req.body.phone,
-            instagramUrl: req.body.instagramUrl
+            instagramUrl: req.body.instagramUrl,
+            status: req.body.status
         };
         const errors = express_validator_1.validationResult(req);
         if (!errors.isEmpty()) {
