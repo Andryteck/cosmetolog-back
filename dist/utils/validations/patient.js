@@ -5,7 +5,7 @@ const validationPatient = {
     create: [
         express_validator_1.check('fullName').isLength({ min: 3 }),
         express_validator_1.check('phone').isLength({ min: 12 }),
-        express_validator_1.check('instagramUrl').isLength({ min: 27 }),
+        express_validator_1.check('instagramUrl').isLength({ min: 0 }),
     ]
 };
 module.exports = validationPatient;
