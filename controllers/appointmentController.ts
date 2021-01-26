@@ -5,7 +5,8 @@ const ruLocale = require('dayjs/locale/ru')
 
 const {Appointment} = require('../models');
 const {Patient} = require('../models');
-
+var customParseFormat = require('dayjs/plugin/customParseFormat')
+dayjs.extend(customParseFormat)
 // const {delayedSms} = require('../utils/sms')
 
 function AppointmentController() {
@@ -163,6 +164,7 @@ const all = function (req:any, res:any) {
                 items: reduce(
                     groupBy(docs, 'date'),
                     (result:any, value:any, key:any) => {
+                        // console.log(key)
                         result = [...result, {title: dayjs(key)
                             .locale(ruLocale)
                             .format('D MMMM'), data: value.sort((a: any, b: any)=> {
@@ -172,7 +174,10 @@ const all = function (req:any, res:any) {
                             })
                             }
                             ]
-                    return result
+                            
+                    return result.sort((a:any, b:any) => {                   
+                        return new Date(a.data[0].date).getTime() - new Date(b.data[0].date).getTime()
+                    })
                 }, []),
         });
     });
