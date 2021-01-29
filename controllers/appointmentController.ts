@@ -55,7 +55,7 @@ const create = async function (req:any, res:any) {
             .split('.')
             .reverse()
             .join('-')}${data.time}`)
-            .subtract(3, 'hour')
+            .subtract(1, 'minute')
             .format('YYYY-MM-DDHHmm')
 
         delayedSms({
