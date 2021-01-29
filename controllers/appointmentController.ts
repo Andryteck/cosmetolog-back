@@ -60,7 +60,7 @@ const create = async function (req:any, res:any) {
 
         delayedSms({
                 number: patient.phone,
-                text: `Сегодня в ${data.time} у Вас процедура.`,
+                text: `Сегодня в ${data.time} у Вас процедура у косметолога.`,
                 time: delayedTime
             }
         ).then(({data}:any) => {
