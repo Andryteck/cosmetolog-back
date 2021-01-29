@@ -7,14 +7,14 @@ const {Appointment} = require('../models');
 const {Patient} = require('../models');
 var customParseFormat = require('dayjs/plugin/customParseFormat')
 dayjs.extend(customParseFormat)
-// const {delayedSms} = require('../utils/sms')
+const {delayedSms} = require('../utils/sms')
 
 function AppointmentController() {
 }
 
 
 const create = async function (req:any, res:any) {
-    let patient;
+    let patient:any;
     const data = {
         user: req.body.user,
         procedure: req.body.procedure,
@@ -51,23 +51,23 @@ const create = async function (req:any, res:any) {
                 });
         }
 
-        // const delayedTime = dayjs(`${data.date
-        //     .split('.')
-        //     .reverse()
-        //     .join('-')}${data.time}`)
-        //     .subtract(2, 'hour')
-        //     .format('YYYY-MM-DDHHmm')
+        const delayedTime = dayjs(`${data.date
+            .split('.')
+            .reverse()
+            .join('-')}${data.time}`)
+            .subtract(3, 'hour')
+            .format('YYYY-MM-DDHHmm')
 
-        // delayedSms({
-        //         number: patient.phone,
-        //         text: `Сегодня в ${data.time} у Вас процедура.`,
-        //         time: delayedTime
-        //     }
-        // ).then(({data}) => {
-        //     console.log(data)
-        // }).catch((err) => {
-        //     console.log(err)
-        // });
+        delayedSms({
+                number: patient.phone,
+                text: `Сегодня в ${data.time} у Вас процедура.`,
+                time: delayedTime
+            }
+        ).then(({data}:any) => {
+            console.log(data)
+        }).catch((err:any) => {
+            console.log(err)
+        });
 
         res.status(201)
             .json({
@@ -164,7 +164,6 @@ const all = function (req:any, res:any) {
                 items: reduce(
                     groupBy(docs, 'date'),
                     (result:any, value:any, key:any) => {
-                        // console.log(key)
                         result = [...result, {title: dayjs(key)
                             .locale(ruLocale)
                             .format('D MMMM'), data: value.sort((a: any, b: any)=> {

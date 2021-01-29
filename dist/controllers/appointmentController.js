@@ -164,7 +164,6 @@ const all = function (req, res) {
         res.json({
             status: 'success',
             items: reduce(groupBy(docs, 'date'), (result, value, key) => {
-                // console.log(key)
                 result = [...result, { title: dayjs(key)
                             .locale(ruLocale)
                             .format('D MMMM'), data: value.sort((a, b) => {
