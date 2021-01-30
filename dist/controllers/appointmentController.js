@@ -17,7 +17,7 @@ const { Appointment } = require('../models');
 const { Patient } = require('../models');
 var customParseFormat = require('dayjs/plugin/customParseFormat');
 dayjs.extend(customParseFormat);
-// const {delayedSms} = require('../utils/sms')
+const { delayedSms } = require('../utils/sms');
 function AppointmentController() {
 }
 const create = function (req, res) {
@@ -56,22 +56,21 @@ const create = function (req, res) {
                     message: err,
                 });
             }
-            // const delayedTime = dayjs(`${data.date
-            //     .split('.')
-            //     .reverse()
-            //     .join('-')}${data.time}`)
-            //     .subtract(2, 'hour')
-            //     .format('YYYY-MM-DDHHmm')
-            // delayedSms({
-            //         number: patient.phone,
-            //         text: `Сегодня в ${data.time} у Вас процедура.`,
-            //         time: delayedTime
-            //     }
-            // ).then(({data}) => {
-            //     console.log(data)
-            // }).catch((err) => {
-            //     console.log(err)
-            // });
+            const delayedTime = dayjs(`${data.date
+                .split('.')
+                .reverse()
+                .join('-')}${data.time}`)
+                .subtract(3, 'hour')
+                .format('YYYY-MM-DDHHmm');
+            delayedSms({
+                number: patient.phone,
+                text: `Сегодня в ${data.time} у Вас процедура у косметолога.`,
+                time: delayedTime
+            }).then(({ data }) => {
+                console.log(data);
+            }).catch((err) => {
+                console.log(err);
+            });
             res.status(201)
                 .json({
                 success: true,
