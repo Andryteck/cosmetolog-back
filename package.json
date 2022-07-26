@@ -1,10 +1,10 @@
 {
   "name": "cosmetologAppBack",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "node --inspect dist/index.js",
+    "start": "nodemon --inspect dist/index.js",
     "watch": "tsc -w",
     "clean": "rimraf dist"
   },

@@ -163,9 +163,11 @@ const all = function (req, res) {
         res.json({
             status: 'success',
             items: reduce(groupBy(docs, 'date'), (result, value, key) => {
-                result = [...result, { title: dayjs(key)
+                result = [...result, {
+                        title: dayjs(key)
                             .locale(ruLocale)
-                            .format(`D MMMM (dddd)`), data: value.sort((a, b) => {
+                            .format(`D MMMM (dddd)`),
+                        data: value.sort((a, b) => {
                             const date1 = b.date + 'T' + b.time;
                             const date2 = a.date + 'T' + a.time;
                             return new Date(date2).getTime() - new Date(date1).getTime();
@@ -179,11 +181,29 @@ const all = function (req, res) {
         });
     });
 };
+const getAppointments = function (req, res) {
+    Appointment.find({})
+        .populate('user')
+        .exec(function (err, docs) {
+        if (err) {
+            return req.status(500)
+                .json({
+                status: 'error',
+                message: err,
+            });
+        }
+        res.json({
+            status: 'success',
+            data: groupBy(docs, 'date'),
+        });
+    });
+};
 AppointmentController.prototype = {
     create,
     all,
     remove,
     update,
+    getAppointments,
 };
 module.exports = AppointmentController;
 //# sourceMappingURL=appointmentController.js.map

@@ -32,6 +32,7 @@ mongoose_1.default.connect(uri, {
     app.delete('/patients/:id', PatientCtrl.remove);
     app.patch('/patients/:id', patientValidation.create, PatientCtrl.update);
     app.get('/appointments', AppointmentCtrl.all);
+    app.get('/schedule', AppointmentCtrl.getAppointments);
     app.post('/appointments', appointmentValidation.create, AppointmentCtrl.create);
     app.delete('/appointments/:id', AppointmentCtrl.remove);
     app.patch('/appointments/:id', appointmentValidation.update, AppointmentCtrl.update);
