@@ -7,7 +7,7 @@
     "start": "nodemon --inspect dist/index.js",
     "watch": "tsc -w",
     "clean": "rimraf dist",
-    "test": "jest --config src/jest.config.js"
+    "test": "jest --config jest.config.js"
   },
   "dependencies": {
     "@types/mongoose": "^5.10.1",
