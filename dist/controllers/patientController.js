@@ -20,7 +20,7 @@ const create = function (req, res) {
         instagramUrl: req.body.instagramUrl,
         status: 'надежный клиент'
     };
-    const errors = express_validator_1.validationResult(req);
+    const errors = (0, express_validator_1.validationResult)(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({
             success: false,
@@ -78,7 +78,7 @@ const update = function (req, res) {
             instagramUrl: req.body.instagramUrl,
             status: req.body.status
         };
-        const errors = express_validator_1.validationResult(req);
+        const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({
                 success: false,

@@ -185,7 +185,6 @@ const all = function (req: any, res: any) {
 
 const getByDay = function (req: any, res: any) {
     const date = req.params?.date || dayjs().format('YYYY-MM-DD');
-    // TODO send object type of {'YYYY-MM-DD': [{}, {}]}
     Appointment.find({})
         .populate('user')
         .exec(function (err: any, docs: any) {
@@ -199,7 +198,13 @@ const getByDay = function (req: any, res: any) {
 
             res.json({
                 status: 'success',
-                data:  groupBy(docs, 'date'),
+                data: docs
+                        .filter((item: any) => item.date === date)
+                        .sort((a: any, b: any) => {
+                            const date1 = b.date + 'T' + b.time
+                            const date2 = a.date + 'T' + a.time
+                            return new Date(date2).getTime() - new Date(date1).getTime()
+                        })
             })
         })
 }
