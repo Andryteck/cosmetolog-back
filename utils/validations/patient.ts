@@ -4,7 +4,7 @@ const validationPatient = {
     create: [
         check('fullName').isLength({min: 3}),
         check('phone').isLength({min: 12}),
-        check('instagramUrl').isLength({min: 0}),
+        check('instagramUrl').isLength({min: 1}),
     ]
 
 }
