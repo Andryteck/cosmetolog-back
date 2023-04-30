@@ -31,7 +31,7 @@ const create = function (req, res) {
             date: req.body.date,
             time: req.body.time,
         };
-        const errors = express_validator_1.validationResult(req);
+        const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({
                 success: false,
@@ -116,7 +116,7 @@ const update = function (req, res) {
             date: req.body.date,
             time: req.body.time
         };
-        const errors = express_validator_1.validationResult(req);
+        const errors = (0, express_validator_1.validationResult)(req);
         if (!errors.isEmpty()) {
             return res.status(422).json({
                 success: false,
@@ -163,7 +163,8 @@ const all = function (req, res) {
         res.json({
             status: 'success',
             items: reduce(groupBy(docs, 'date'), (result, value, key) => {
-                result = [...result, { title: dayjs(key)
+                result = [...result, {
+                        title: dayjs(key)
                             .locale(ruLocale)
                             .format(`D MMMM (dddd)`), data: value.sort((a, b) => {
                             const date1 = b.date + 'T' + b.time;
@@ -179,11 +180,37 @@ const all = function (req, res) {
         });
     });
 };
+const getByDay = function (req, res) {
+    var _a;
+    const date = ((_a = req.params) === null || _a === void 0 ? void 0 : _a.date) || dayjs().format('YYYY-MM-DD');
+    Appointment.find({})
+        .populate('user')
+        .exec(function (err, docs) {
+        if (err) {
+            return req.status(500)
+                .json({
+                status: 'error',
+                message: err,
+            });
+        }
+        res.json({
+            status: 'success',
+            data: docs
+                .filter((item) => item.date === date)
+                .sort((a, b) => {
+                const date1 = b.date + 'T' + b.time;
+                const date2 = a.date + 'T' + a.time;
+                return new Date(date2).getTime() - new Date(date1).getTime();
+            })
+        });
+    });
+};
 AppointmentController.prototype = {
     create,
     all,
     remove,
     update,
+    getByDay,
 };
 module.exports = AppointmentController;
 //# sourceMappingURL=appointmentController.js.map

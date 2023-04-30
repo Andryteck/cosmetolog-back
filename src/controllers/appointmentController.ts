@@ -1,4 +1,5 @@
 import {validationResult} from "express-validator";
+
 const {groupBy, reduce} = require('lodash')
 const dayjs = require('dayjs')
 const ruLocale = require('dayjs/locale/ru')
@@ -13,8 +14,8 @@ function AppointmentController() {
 }
 
 
-const create = async function (req:any, res:any) {
-    let patient:any;
+const create = async function (req: any, res: any) {
+    let patient: any;
     const data = {
         user: req.body.user,
         procedure: req.body.procedure,
@@ -42,7 +43,7 @@ const create = async function (req:any, res:any) {
             });
     }
 
-    Appointment.create(data, function (err:any, doc:any) {
+    Appointment.create(data, function (err: any, doc: any) {
         if (err) {
             return res.status(500)
                 .json({
@@ -63,9 +64,9 @@ const create = async function (req:any, res:any) {
                 text: `Сегодня в ${data.time} у Вас процедура у косметолога.`,
                 time: delayedTime
             }
-        ).then(({data}:any) => {
+        ).then(({data}: any) => {
             console.log(data)
-        }).catch((err:any) => {
+        }).catch((err: any) => {
             console.log(err)
         });
         res.status(201)
@@ -77,7 +78,7 @@ const create = async function (req:any, res:any) {
 
 };
 
-const remove = async function (req:any, res:any) {
+const remove = async function (req: any, res: any) {
     const id = req.params.id;
     try {
         await Appointment.findOne({_id: id});
@@ -89,7 +90,7 @@ const remove = async function (req:any, res:any) {
             });
     }
 
-    Appointment.deleteOne({_id: id}, (err:any) => {
+    Appointment.deleteOne({_id: id}, (err: any) => {
         if (err) {
             return res.status(500)
                 .json({
@@ -103,7 +104,7 @@ const remove = async function (req:any, res:any) {
     })
 };
 
-const update = async function (req:any, res:any) {
+const update = async function (req: any, res: any) {
     const appointmentId = req.params.id;
     const data = {
         procedure: req.body.procedure,
@@ -123,33 +124,33 @@ const update = async function (req:any, res:any) {
     try {
         const updateAppointment = await Appointment.findByIdAndUpdate(appointmentId,
             data, {new: true})
-            if(updateAppointment){
-                res.status(200)
+        if (updateAppointment) {
+            res.status(200)
                 .json({
                     success: true,
                     data: updateAppointment,
                 });
-            } else {
-                res.status(404)
+        } else {
+            res.status(404)
                 .json({
                     success: false,
                     message: 'Appointment_not_found',
-                }); 
-            }
-    } catch(err){
+                });
+        }
+    } catch (err) {
         res.status(500)
-                    .json({
-                        success: false,
-                        message: err,
-                    });
-                }
+            .json({
+                success: false,
+                message: err,
+            });
+    }
 
 };
 
-const all = function (req:any, res:any) {
+const all = function (req: any, res: any) {
     Appointment.find({})
         .populate('user')
-        .exec(function (err:any, docs:any) {
+        .exec(function (err: any, docs: any) {
             if (err) {
                 return req.status(500)
                     .json({
@@ -162,33 +163,58 @@ const all = function (req:any, res:any) {
                 status: 'success',
                 items: reduce(
                     groupBy(docs, 'date'),
-                    (result:any, value:any, key:any) => {
-                        result = [...result, {title: dayjs(key)
-                            .locale(ruLocale)
-                            .format(`D MMMM (dddd)`), data: value.sort((a: any, b: any)=> {
-                                const date1 = b.date+'T'+b.time
-                                const date2 = a.date+'T'+a.time
-                                return new Date(date2).getTime() - new Date(date1).getTime() 
+                    (result: any, value: any, key: any) => {
+                        result = [...result, {
+                            title: dayjs(key)
+                                .locale(ruLocale)
+                                .format(`D MMMM (dddd)`), data: value.sort((a: any, b: any) => {
+                                const date1 = b.date + 'T' + b.time
+                                const date2 = a.date + 'T' + a.time
+                                return new Date(date2).getTime() - new Date(date1).getTime()
                             })
-                            }
-                            ]
-                            
-                    return result.sort((a:any, b:any) => {                   
-                        return new Date(a.data[0].date).getTime() - new Date(b.data[0].date).getTime()
-                    })
-                }, []),
+                        }
+                        ]
+
+                        return result.sort((a: any, b: any) => {
+                            return new Date(a.data[0].date).getTime() - new Date(b.data[0].date).getTime()
+                        })
+                    }, []),
+            });
         });
-    });
 };
 
+const getByDay = function (req: any, res: any) {
+    const date = req.params?.date || dayjs().format('YYYY-MM-DD');
+    Appointment.find({})
+        .populate('user')
+        .exec(function (err: any, docs: any) {
+            if (err) {
+                return req.status(500)
+                    .json({
+                        status: 'error',
+                        message: err,
+                    });
+            }
 
+            res.json({
+                status: 'success',
+                data: docs
+                        .filter((item: any) => item.date === date)
+                        .sort((a: any, b: any) => {
+                            const date1 = b.date + 'T' + b.time
+                            const date2 = a.date + 'T' + a.time
+                            return new Date(date2).getTime() - new Date(date1).getTime()
+                        })
+            })
+        })
+}
 
 AppointmentController.prototype = {
     create,
     all,
     remove,
     update,
-
+    getByDay,
 }
 
 module.exports = AppointmentController;
